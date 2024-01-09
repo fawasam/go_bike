@@ -1,0 +1,16 @@
+/* ZoomableImage.css */
+.zoomable-image-container {
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .zoomable-image-container:hover {
+    transform: scale(2); /* Adjust the scale factor based on your preference */
+  }
+  
+  .zoomable-image-container img {
+    width: 150px;
+    height: 150px;
+  }
+  
