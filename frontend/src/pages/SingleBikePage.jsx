@@ -168,7 +168,7 @@ const SingleBikePage = () => {
               <p>description : {bikeData.description}</p>
               <p>available : {bikeData.available ? "yes" : "no"}</p>
             </div>
-            {!role == "admin" ? (
+            {role == "renter" || role == "rentee" ? (
               <div className="col-span-4 gap-y-3">
                 <h2 className="font-bold text-xl">Rental Information</h2>
                 <div className="mt-6 gap-y-4 gap-3 ">

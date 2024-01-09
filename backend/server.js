@@ -142,7 +142,12 @@ app.get("/api/user", verifyJWT, async (req, res) => {
 
   await User.find({ _id: user })
     .populate("bikes")
-    .populate("rental")
+    .populate({
+      path: "rental",
+      populate: { path: "bike", select: "model type brand image" },
+      populate: { path: "user", select: "username email" },
+    })
+    .exec()
     .then((result) => {
       if (!result) {
         return res.status(404).json({ error: "result not found" }); // Handle non-existent ID
@@ -292,7 +297,7 @@ app.post("/api/updateBike/:id", verifyJWT, async (req, res) => {
 });
 
 app.get("/api/getAllBikes", async (req, res) => {
-  await Bike.find()
+  await Bike.find({ isVerified: true })
     .then((bikes) => {
       res.status(200).json({ bikes });
     })
@@ -411,10 +416,14 @@ app.post("/api/rentABike/:id", verifyJWT, async (req, res) => {
 });
 
 app.get("/api/getAllRentals/unVerified", verifyJWT, async (req, res) => {
-  const user = req.user;
-
   await Rental.find({ paymentStatus: { $ne: "paid" } })
-    .populate("bike")
+    .populate({
+      path: "bike",
+      populate: {
+        path: "user",
+        select: "email phone username", // Populate publisher for each book
+      },
+    })
     .then((rental) => {
       res.status(200).json({ rental });
     })
@@ -422,6 +431,7 @@ app.get("/api/getAllRentals/unVerified", verifyJWT, async (req, res) => {
       res.status(500).json({ error: err.message });
     });
 });
+
 app.get("/api/getAllRentals", verifyJWT, async (req, res) => {
   const user = req.user;
 

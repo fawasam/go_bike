@@ -25,6 +25,7 @@ import SingleBikePage from "./pages/SingleBikePage";
 import RenteeBikePage from "./pages/RenteeBikePage";
 import AdminBike from "./pages/AdminBike";
 import AdminRental from "./pages/AdminRental";
+import UserOrder from "./pages/UserOrder";
 export const UserContext = createContext({});
 export const BikeContext = createContext();
 
@@ -59,6 +60,7 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/user/:username" element={<UserPage />} />
               <Route path="/user/:username/rentee" element={<RenteePage />} />
+              <Route path="/user/:username/myOrders" element={<UserOrder />} />
               <Route
                 path="/user/:username/rentee/bikes"
                 element={<RenteeBikePage />}

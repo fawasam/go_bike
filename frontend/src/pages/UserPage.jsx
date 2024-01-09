@@ -46,6 +46,7 @@ const UserPage = () => {
       handleFetchUserDetails();
     }
   }, []);
+  console.log(userDetails);
 
   return !access_token ? (
     <Navigate to="/" />
@@ -58,7 +59,7 @@ const UserPage = () => {
           <h1>Email - {email}</h1>
           <h1>Phone - {phone ? phone : "+91xxxxxxxxxx"}</h1>
           <div className="flex items-center justify-center flex-col">
-            {userDetails?.rental?.length > 0 ? (
+            {userDetails?.bikes?.length > 0 ? (
               <Link to={`/user/${username}/rentee/bikes`}>
                 <button
                   className="btn_base text-primary-black border-2 border-primary-green
@@ -74,6 +75,16 @@ const UserPage = () => {
                 rounded-full py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"
                 >
                   Become a Rentee
+                </button>
+              </Link>
+            )}
+            {userDetails?.rental?.length > 0 && (
+              <Link to={`/user/${username}/myOrders`}>
+                <button
+                  className="btn_base text-primary-black border-2 border-primary-green
+                rounded-full py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"
+                >
+                  My Order
                 </button>
               </Link>
             )}
