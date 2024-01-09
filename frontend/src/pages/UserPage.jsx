@@ -58,21 +58,25 @@ const UserPage = () => {
           <h1>Email - {email}</h1>
           <h1>Phone - {phone ? phone : "+91xxxxxxxxxx"}</h1>
           <div className="flex items-center justify-center flex-col">
-            {/* <button
-              className="btn_base text-primary-black border-2 border-primary-green
-            rounded-full py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"
-              onClick={handleLogout}
-            >
-              Rent a Bike
-            </button> */}
-            <Link to={`/user/${username}/rentee`}>
-              <button
-                className="btn_base text-primary-black border-2 border-primary-green
-            rounded-full py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"
-              >
-                Become a Rentee
-              </button>
-            </Link>
+            {userDetails?.rental?.length > 0 ? (
+              <Link to={`/user/${username}/rentee/bikes`}>
+                <button
+                  className="btn_base text-primary-black border-2 border-primary-green
+                rounded-full py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"
+                >
+                  My Bikes
+                </button>
+              </Link>
+            ) : (
+              <Link to={`/user/${username}/rentee`}>
+                <button
+                  className="btn_base text-primary-black border-2 border-primary-green
+                rounded-full py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"
+                >
+                  Become a Rentee
+                </button>
+              </Link>
+            )}
             <button
               className="btn_base text-primary-black border-2 border-primary-green
             rounded-full py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"

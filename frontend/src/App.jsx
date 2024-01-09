@@ -21,6 +21,10 @@ import { lookInSession } from "./common/session";
 import { toast, Toaster } from "react-hot-toast";
 import UserPage from "./pages/UserPage";
 import RenteePage from "./pages/RenteePage";
+import SingleBikePage from "./pages/SingleBikePage";
+import RenteeBikePage from "./pages/RenteeBikePage";
+import AdminBike from "./pages/AdminBike";
+import AdminRental from "./pages/AdminRental";
 export const UserContext = createContext({});
 export const BikeContext = createContext();
 
@@ -46,7 +50,6 @@ function App() {
             <Toaster />
             <Routes>
               <Route path="/" element={<Hero />} />
-              <Route path="/bikes" element={<CarsForRental />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/testimonials" element={<Testimonials />} />
               <Route path="/faq" element={<FAQ />} />
@@ -56,6 +59,14 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/user/:username" element={<UserPage />} />
               <Route path="/user/:username/rentee" element={<RenteePage />} />
+              <Route
+                path="/user/:username/rentee/bikes"
+                element={<RenteeBikePage />}
+              />
+              <Route path="/bikes" element={<CarsForRental />} />
+              <Route path="/bike/:id" element={<SingleBikePage />} />
+              <Route path="/admin/bikes" element={<AdminBike />} />
+              <Route path="/admin/rental" element={<AdminRental />} />
             </Routes>
             <Footer />
           </BikeContext.Provider>

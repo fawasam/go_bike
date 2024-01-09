@@ -62,7 +62,7 @@ app.post("/upload", (req, res) => {
     if (err) {
       res.status(400).send("Error uploading file.");
     } else {
-      const imageUrl = process.env.CLIENT_URL + "/uploads/" + req.file.filename;
+      const imageUrl = "http://localhost:5000/uploads/" + req.file.filename;
       res.status(200).json({ imageUrl: imageUrl });
     }
   });
@@ -171,7 +171,7 @@ app.post("/api/createBike", verifyJWT, async (req, res) => {
     image,
     available,
   } = req.body;
-  if (!model || !type || !price || !user) {
+  if (!model || !type || !price || !user || !image) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   const bike = new Bike({
@@ -237,9 +237,9 @@ app.post("/api/updateBike/:id", verifyJWT, async (req, res) => {
     return res.status(400).json({ error: "Missing required ID" });
   }
 
-  if (!model || !type || !price || !user) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
+  // if (!model || !type || !price || !user) {
+  //   return res.status(400).json({ error: "Missing required fields" });
+  // }
 
   let bike;
 
@@ -301,6 +301,16 @@ app.get("/api/getAllBikes", async (req, res) => {
     });
 });
 
+app.get("/api/getAllBikes/unVerified", async (req, res) => {
+  await Bike.find({ isVerified: false })
+    .then((bikes) => {
+      res.status(200).json({ bikes });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 app.get("/api/getBike/:id", async (req, res) => {
   let { id } = req.params;
 
@@ -316,14 +326,26 @@ app.get("/api/getBike/:id", async (req, res) => {
     });
 });
 
-app.delete("/api/getBike/:id", async (req, res) => {
+app.delete("/api/getBike/:id", verifyJWT, async (req, res) => {
   let { id } = req.params;
+  const user = req.user;
 
   await Bike.findByIdAndDelete({ _id: id })
-    .then((bikes) => {
+    .then(async (bikes) => {
       if (!bikes) {
         return res.status(404).json({ error: "Bike not found" }); // Handle non-existent ID
       }
+
+      await User.findOneAndUpdate(
+        { _id: user },
+        {
+          $pull: { bikes: bikes._id },
+        }
+      ).catch((err) => {
+        return res.status(500).json({
+          error: err.message,
+        });
+      });
       res.status(200).json({ message: "Bike deleted successfully" });
     })
     .catch((err) => {
@@ -352,9 +374,9 @@ app.post("/api/rentABike/:id", verifyJWT, async (req, res) => {
     }
 
     const bike = await Bike.findById({ _id: bikeId });
-    if (!bike || !bike.available) {
-      return res.status(400).json({ error: "Bike unavailable" });
-    }
+    // if (!bike || !bike.available) {
+    //   return res.status(400).json({ error: "Bike unavailable" });
+    // }
 
     // Create a rental object
     const rental = new Rental({
@@ -388,6 +410,18 @@ app.post("/api/rentABike/:id", verifyJWT, async (req, res) => {
   }
 });
 
+app.get("/api/getAllRentals/unVerified", verifyJWT, async (req, res) => {
+  const user = req.user;
+
+  await Rental.find({ paymentStatus: { $ne: "paid" } })
+    .populate("bike")
+    .then((rental) => {
+      res.status(200).json({ rental });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
 app.get("/api/getAllRentals", verifyJWT, async (req, res) => {
   const user = req.user;
 

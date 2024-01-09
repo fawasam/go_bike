@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import { BikeContext, UserContext } from "../App";
 import { toast, Toaster } from "react-hot-toast";
@@ -6,6 +6,7 @@ import axios from "axios";
 
 const RenteePage = () => {
   const navigate = useNavigate();
+  let { bikesData, setBikesData } = useContext(BikeContext);
   let access_token = useContext(UserContext)?.userAuth?.access_token || null;
   const [imageFile, setImageFile] = useState(null);
 
@@ -14,19 +15,14 @@ const RenteePage = () => {
     setUserAuth,
   } = useContext(UserContext);
 
-  let { bikesData, setBikesData } = useContext(BikeContext);
-
   const handleImageUpload = async (img) => {
     if (img.size == 0) {
       toast.error("Missing image ");
     } else {
       var loadingToast = toast.loading("Uploading....");
-
-      console.log(img);
       const formData = new FormData();
       formData.append("image", img);
 
-      console.log(formData);
       await axios
         .post("http://localhost:5000/upload", formData, {
           headers: {
@@ -56,11 +52,10 @@ const RenteePage = () => {
       formData[key] = value;
     }
 
-    if (formData.image) {
-      await handleImageUpload(formData.image);
-    }
+    await handleImageUpload(formData.image);
+    var loadingToast = toast.loading("Submiting....");
+    toast.dismiss(loadingToast);
     const newData = { ...formData, image: imageFile };
-
     await axios
       .post("http://localhost:5000/api/createBike", newData, {
         headers: {
@@ -69,6 +64,8 @@ const RenteePage = () => {
       })
       .then(({ data }) => {
         setBikesData({ ...bikesData, data });
+        toast.dismiss(loadingToast);
+
         toast.success("Successfully Created👍");
         navigate("/bikes");
         console.log(data);
@@ -76,7 +73,9 @@ const RenteePage = () => {
       .catch((response) => {
         toast.error(response.response.data.error);
       });
+    // }
   };
+  console.log(imageFile);
 
   return (
     <div className="px-20 pt-20  h-screen w-full">

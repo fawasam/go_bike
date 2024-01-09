@@ -2,6 +2,7 @@
 import React from "react";
 import { List, Button, Card } from "antd";
 import ZoomableImage from "./zoomableimage";
+import { Link } from "react-router-dom";
 
 const ListViewComponent = ({ data }) => {
   return (
@@ -10,36 +11,40 @@ const ListViewComponent = ({ data }) => {
       dataSource={data}
       renderItem={(item) => (
         <List.Item>
-          <Card
-            style={{
-              margin: "16px",
-              background: "#f0f0f0",
-              border: "3px solid #8FDB8F",
-              borderRadius: "8px",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "flex-start" }}>
-              {/* Zoomable Image container */}
-              <div style={{ flex: "0 0 auto", marginRight: "16px" }}>
-                <ZoomableImage src={item.image} alt={item.model} />
-              </div>
+          <Link to={`/bike/${item._id}`}>
+            <Card
+              style={{
+                margin: "16px",
+                background: "#f0f0f0",
+                border: "3px solid #8FDB8F",
+                borderRadius: "8px",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "flex-start" }}>
+                {/* Zoomable Image container */}
+                <div style={{ flex: "0 0 auto", marginRight: "16px" }}>
+                  <ZoomableImage src={item.image} alt={item.model} />
+                </div>
 
-              {/* Description and buy button container */}
-              <div style={{ flex: "1 1 auto" }}>
-                <h3 style={{ fontWeight: "bold" }}>{item.model}</h3>
-                <p style={{ fontFamily: "Arial, sans-serif" }}>
-                  {item.description}
-                </p>
-                <p>{item.price}/day</p>
-                <Button
-                  type="primary"
-                  style={{ color: "black", background: "#8FDB8F" }}
-                >
-                  Buy
-                </Button>
+                {/* Description and buy button container */}
+                <div style={{ flex: "1 1 auto" }}>
+                  <h3 style={{ fontWeight: "bold" }}>{item.model}</h3>
+                  <h2>{item.type}</h2>
+                  <h2>Available - {item.available ? "yes" : "no"}</h2>
+                  <p style={{ fontFamily: "Arial, sans-serif" }}>
+                    {item.description}
+                  </p>
+                  <p>{item.price}/day</p>
+                  <Button
+                    type="primary"
+                    style={{ color: "black", background: "#8FDB8F" }}
+                  >
+                    Rent
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          </Link>
         </List.Item>
       )}
     />

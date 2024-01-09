@@ -72,7 +72,6 @@ export const bikeStructure = {
   isVerified: "",
 };
 
-export const BlogContext = createContext({});
 const CarsForRental = () => {
   const [viewType, setViewType] = useState("list");
   const { bikesData, setBikesData } = useContext(BikeContext);
@@ -90,7 +89,6 @@ const CarsForRental = () => {
   useEffect(() => {
     getAllBikesData();
   }, []);
-  console.log(bikesData);
 
   return (
     <div className="pt-36">
