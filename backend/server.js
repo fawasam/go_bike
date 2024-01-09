@@ -145,7 +145,7 @@ app.get("/api/user", verifyJWT, async (req, res) => {
     .populate({
       path: "rental",
       populate: { path: "bike", select: "model type brand image" },
-      populate: { path: "user", select: "username email" },
+      // populate: { path: "user", select: "username email" },
     })
     .exec()
     .then((result) => {

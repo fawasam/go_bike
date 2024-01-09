@@ -115,6 +115,32 @@ const SingleBikePage = () => {
       });
   };
 
+  const handleResetAvailablityBike = () => {
+    var loadingToast = toast.loading("Changing....");
+    axios
+      .post(
+        `http://localhost:5000/api/updateBike/${id}`,
+        {
+          available: true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      )
+      .then(({ data }) => {
+        toast.dismiss(loadingToast);
+        toast.success("Bike Availablity Changed");
+        navigate(`/user/${username}`);
+      })
+      .catch((err) => {
+        toast.dismiss(loadingToast);
+        console.log(err);
+        toast.error(err.response.data.error);
+      });
+  };
+
   const handleDeleteBike = (e) => {
     var loadingToast = toast.loading("Removing....");
     axios
@@ -241,6 +267,14 @@ const SingleBikePage = () => {
                 >
                   Verified
                   <i className="fi fi-br-check"></i>
+                </button>
+                <button
+                  className="btn_base text-primary-black border-2 border-primary-green
+                rounded-full py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"
+                  onClick={handleResetAvailablityBike}
+                >
+                  Update
+                  <i className="fi fi-rr-user-gear"></i>
                 </button>
                 <button
                   className="btn_base text-primary-black border-2 border-primary-green

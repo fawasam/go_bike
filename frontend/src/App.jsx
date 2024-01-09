@@ -26,6 +26,7 @@ import RenteeBikePage from "./pages/RenteeBikePage";
 import AdminBike from "./pages/AdminBike";
 import AdminRental from "./pages/AdminRental";
 import UserOrder from "./pages/UserOrder";
+import AdminRentalPage from "./pages/AdminRentalPage";
 export const UserContext = createContext({});
 export const BikeContext = createContext();
 

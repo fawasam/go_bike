@@ -5,6 +5,7 @@ import busIcon from "../assets/bus-icon.svg";
 import locationIcon from "../assets/location-icon.svg";
 import calendarIcon from "../assets/calendar-icon.svg";
 import pondi from "../assets/uni-fws.jpg";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const targetRef = useRef(null);
@@ -36,13 +37,15 @@ const Hero = () => {
           <h4 className="text-white text-center font-raleway text-xl pb-4">
             You choose. We deliver.
           </h4>
-          <PrimaryButton
-            className="w-1/5 lg:w-40 flex item-center mx-auto"
-            small={false}
-            onClick={handleBookNowClick}
-          >
-            Book Now
-          </PrimaryButton>
+          <Link to="/bikes">
+            <PrimaryButton
+              className="w-1/5 lg:w-40 flex item-center mx-auto"
+              small={false}
+              onClick={handleBookNowClick}
+            >
+              Book Now
+            </PrimaryButton>
+          </Link>
         </div>
       </div>
 
@@ -76,7 +79,7 @@ const Hero = () => {
             small={false}
             ref={targetRef}
           >
-            Find your Bike
+            <Link to="/bikes">Find your Bike</Link>
           </PrimaryButton>
         </div>
       </div>

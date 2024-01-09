@@ -9,8 +9,8 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 const AdminRental = () => {
   const navigate = useNavigate();
   const [rentalDetails, setRentalDetails] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
-  const [rentalId, setRentalId] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("pending");
+
   let {
     userAuth: { username, email, phone, role },
     setUserAuth,
@@ -18,39 +18,35 @@ const AdminRental = () => {
 
   let access_token = useContext(UserContext)?.userAuth?.access_token || null;
 
-  // const handleCall = () => {
-  //   const formattedNumber = `tel:${phoneNumber}`; // Ensure correct formatting
-  //   // window.location.href = formattedNumber;
-  // };
+  const handelVerifyRentalRequest = (id) => {
+    console.log(id);
+    var loadingToast = toast.loading("Verifying....");
 
-  // const handelVerifyRentalRequest = (e) => {
-  //   e.preventDefault();
-  //   var loadingToast = toast.loading("Verifying....");
-  //   axios
-  //     .post(
-  //       `http://localhost:5000/api/updateRental`,
-  //       {
-  //         paymentStatus: "paid",
-  //         returned: false,
-  //         _id: rentalId,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${access_token}`,
-  //         },
-  //       }
-  //     )
-  //     .then(({ data }) => {
-  //       toast.dismiss(loadingToast);
-  //       toast.success("Rental Verification finished");
-  //       navigate(`/user/${username}`);
-  //     })
-  //     .catch((err) => {
-  //       toast.dismiss(loadingToast);
-  //       console.log(err);
-  //       toast.error(err.response.data.error);
-  //     });
-  // };
+    axios
+      .post(
+        `http://localhost:5000/api/updateRental`,
+        {
+          _id: id,
+          paymentStatus: selectedOption,
+          returned: false,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      )
+      .then(({ data }) => {
+        toast.dismiss(loadingToast);
+        toast.success("Rental Verification finished");
+        navigate(`/user/${username}`);
+      })
+      .catch((err) => {
+        toast.dismiss(loadingToast);
+        console.log(err);
+        toast.error(err.response.data.error);
+      });
+  };
 
   const getNotVerifiedRentalRequest = async () => {
     await axios
@@ -67,25 +63,34 @@ const AdminRental = () => {
       });
   };
 
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Selected option:", selectedOption);
+  };
+
   useEffect(() => {
     if (access_token) {
       getNotVerifiedRentalRequest();
     }
   }, []);
-  console.log(rentalDetails);
 
   return !rentalDetails ? (
     <h2 className="text-center mt-4">Loading...</h2>
   ) : (
-    <div className="lg:px-40  px-10 pt-20   h-screen w-full m-auto  items-center">
+    <div className="lg:px-40  px-10 pt-20   h-full w-full m-auto  items-center">
       <h2 className="text-2xl font-bold mb-4">New Rental Request</h2>
-      <div>
+      <div className=" ">
         {rentalDetails?.rental?.map((rental, i) => {
-          setPhoneNumber(rental.bike.user.phone);
-          setRentalId(rental._id);
+          // setPhoneNumber(rental.bike.user.phone);
+          // setRentalId(rental._id);
+          console.log(rental);
           return (
-            <div key={i} className="flex">
-              <div className="border p-4 lg:flex md:flex gap-6">
+            <div key={i} className=" my-6">
+              <div className="border p-4 lg:flex md:flex gap-6 justify-around">
                 <div>
                   <p className="font-bold mb-2">Bike Details</p>
                   <img
@@ -94,14 +99,15 @@ const AdminRental = () => {
                     className="h-60 w-60 object-cover"
                   />
                 </div>
-                <div>
-                  <h2>{rental.bike.model}</h2>
+                <div className="text-center">
+                  <h2 className="font-medium">{rental.bike.model}</h2>
                   <h2>{rental.bike.type}</h2>
                   <h2>{rental.bike.brand}</h2>
                   <h2>Start Date :{getFullDay(rental.startDate)}</h2>
                   <h2>End Date :{getFullDay(rental.endDate)}</h2>
                   <p>Total cost :{rental.cost}</p>
                   <p>Notes :{rental.notes ? rental.notes : "Nothing"}</p>
+                  <p>PaymentStatus :{rental.paymentStatus}</p>
 
                   <p className="font-bold mt-4 my-2">User Details</p>
                   <h1>Username :{rental.bike.user.username}</h1>
@@ -109,24 +115,35 @@ const AdminRental = () => {
                   <h1>Phone :{rental.bike.user.phone}</h1>
                 </div>
                 <div>
-                  {/* <div className="flex flex-col">
-                    <button
-                      className="btn_base text-primary-black border-2 border-primary-green
-                rounded-full py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"
-                      // onClick={handelVerifyRentalRequest}
-                    >
-                      Verify
-                      <i className="fi fi-rr-check text-sm ml-2"></i>
-                    </button>
-                    <button
-                      className="btn_base text-primary-black border-2 border-primary-green
-                rounded-full py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"
-                      // onClick={handleCall}
-                    >
-                      Contact
-                      <i className="fi fi-rr-phone text-sm ml-2"></i>
-                    </button>
-                  </div> */}
+                  <div className="flex flex-col">
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="relative inline-block text-left my-2">
+                        <div className="my-2">
+                          <span className="rounded-md shadow-sm">
+                            <select
+                              onChange={handleOptionChange}
+                              value={selectedOption}
+                              className="block appearance-none w-full bg-white border border-gray-300 
+                           hover:border-gray-500 px-4 py-2 my-2 pr-8 rounded leading-tight 
+                           focus:outline-none focus:bg-white focus:border-gray-500"
+                            >
+                              <option value="pending">pending</option>
+                              <option value="paid">paid</option>
+                              <option value="cancelled">cancelled</option>
+                            </select>
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        type="submit"
+                        className="btn_base ml-2 text-primary-black border-2 border-primary-green rounded-md
+                 py-2 px-5 mt-4 hover:bg-primary-green hover:border-transparent hover:text-white"
+                        onClick={() => handelVerifyRentalRequest(rental._id)}
+                      >
+                        Submit
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
