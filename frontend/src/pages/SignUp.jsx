@@ -40,7 +40,7 @@ export default function Login() {
     // }
 
     axios
-      .post("http://localhost:5000/api/register", formData)
+      .post("https://go-bike-backend.onrender.com/api/register", formData)
       .then(({ data }) => {
         storeInSession("user", JSON.stringify(data));
         setUserAuth(data);

@@ -78,7 +78,7 @@ const CarsForRental = () => {
 
   const getAllBikesData = () => {
     axios
-      .get("http://localhost:5000/api/getAllBikes")
+      .get("https://go-bike-backend.onrender.com/api/getAllBikes")
       .then(({ data: { bikes } }) => {
         setBikesData({ ...bikesData, bikes });
       })

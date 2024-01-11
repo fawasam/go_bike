@@ -11,11 +11,14 @@ const AdminRentalPage = () => {
   const [rentalDetails, setRentalDetails] = useState(null);
   const getNotVerifiedRentalRequest = async () => {
     await axios
-      .get("http://localhost:5000/api/getAllRentals/unVerified", {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
+      .get(
+        "https://go-bike-backend.onrender.com/api/getAllRentals/unVerified",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      )
       .then(({ data }) => {
         setRentalDetails(data);
       })

@@ -15,7 +15,7 @@ const AdminBike = () => {
 
   const getNotVerifiedBikeRequest = () => {
     axios
-      .get("http://localhost:5000/api/getAllBikes/unVerified")
+      .get("https://go-bike-backend.onrender.com/api/getAllBikes/unVerified")
       .then(({ data }) => {
         setUserDetails(data);
       })

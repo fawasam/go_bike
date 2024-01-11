@@ -25,7 +25,7 @@ const RenteePage = () => {
       formData.append("image", img);
 
       await axios
-        .post("http://localhost:5000/upload", formData, {
+        .post("https://go-bike-backend.onrender.com/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -58,7 +58,7 @@ const RenteePage = () => {
     toast.dismiss(loadingToast);
     const newData = { ...formData, image: imageFile };
     await axios
-      .post("http://localhost:5000/api/createBike", newData, {
+      .post("https://go-bike-backend.onrender.com/api/createBike", newData, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },

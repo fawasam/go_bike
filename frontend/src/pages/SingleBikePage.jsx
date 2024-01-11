@@ -43,7 +43,7 @@ const SingleBikePage = () => {
 
   const getAllBikesData = () => {
     axios
-      .get(`http://localhost:5000/api/getBike/${id}`)
+      .get(`https://go-bike-backend.onrender.com/api/getBike/${id}`)
       .then(({ data: { bikes } }) => {
         setBikeData(bikes);
       })
@@ -61,7 +61,7 @@ const SingleBikePage = () => {
 
     axios
       .post(
-        `http://localhost:5000/api/rentABike/${id}`,
+        `https://go-bike-backend.onrender.com/api/rentABike/${id}`,
         {
           startDate,
           endDate,
@@ -96,7 +96,7 @@ const SingleBikePage = () => {
     var loadingToast = toast.loading("Verifying....");
     axios
       .post(
-        `http://localhost:5000/api/updateBike/${id}`,
+        `https://go-bike-backend.onrender.com/api/updateBike/${id}`,
         {
           isVerified: true,
         },
@@ -122,7 +122,7 @@ const SingleBikePage = () => {
     var loadingToast = toast.loading("Changing....");
     axios
       .post(
-        `http://localhost:5000/api/updateBike/${id}`,
+        `https://go-bike-backend.onrender.com/api/updateBike/${id}`,
         {
           available: true,
         },
@@ -148,7 +148,7 @@ const SingleBikePage = () => {
     var loadingToast = toast.loading("Removing....");
     axios
       .delete(
-        `http://localhost:5000/api/getBike/${id}`,
+        `https://go-bike-backend.onrender.com/api/getBike/${id}`,
 
         {
           headers: {

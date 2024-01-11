@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { getFullDay } from "../common/date";
 
 const OrderViewComponent = ({ data }) => {
-  // http://localhost:5000/api/getBike/659d0e102439db8c605c02b8
+  // https://go-bike-backend.onrender.com/api/getBike/659d0e102439db8c605c02b8
 
   console.log(data);
   return (

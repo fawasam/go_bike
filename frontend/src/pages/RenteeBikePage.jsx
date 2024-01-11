@@ -16,7 +16,7 @@ const RenteeBikePage = () => {
 
   const handleFetchUserDetails = () => {
     axios
-      .get("http://localhost:5000/api/user", {
+      .get("https://go-bike-backend.onrender.com/api/user", {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
