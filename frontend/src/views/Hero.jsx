@@ -49,7 +49,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="wrapper" ref={targetRef}>
+      {/* <div className="wrapper" ref={targetRef}>
         <div className="relative bg-white px-10 sm:px-[76px] py-9 sm:py-[70px] mt-5 sm:-mt-[166px] min-h-[330px] shadow-lg rounded-xl flex flex-col gap-8">
           <div className="flex flex-col xl:flex-row gap-5">
             <LabelInput
@@ -82,7 +82,7 @@ const Hero = () => {
             <Link to="/bikes">Find your Bike</Link>
           </PrimaryButton>
         </div>
-      </div>
+      </div> */}
       <RentingProcess />
     </div>
   );

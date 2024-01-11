@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 
 import { Link, Navigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
@@ -11,13 +11,14 @@ export default function Login() {
     userAuth: { access_token },
     setUserAuth,
   } = useContext(UserContext);
+  const formElement = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
     let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
-    console.log(formElement);
-    let form = new FormData(formElement);
+
+    let form = new FormData(formElement.current);
     let formData = {};
     for (let [key, value] of form.entries()) {
       formData[key] = value;
@@ -59,7 +60,7 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" id="formElement">
+          <form className="space-y-6" ref={formElement}>
             <div>
               <label
                 htmlFor="email"

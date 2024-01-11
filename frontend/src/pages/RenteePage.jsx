@@ -14,6 +14,7 @@ const RenteePage = () => {
     userAuth: { username, email, phone },
     setUserAuth,
   } = useContext(UserContext);
+  const formElement = useRef(null);
 
   const handleImageUpload = async (img) => {
     if (img.size == 0) {
@@ -46,7 +47,7 @@ const RenteePage = () => {
 
   const handleBikeSubmit = async (e) => {
     e.preventDefault();
-    let form = new FormData(formElement);
+    let form = new FormData(formElement.current);
     let formData = {};
     for (let [key, value] of form.entries()) {
       formData[key] = value;
@@ -85,7 +86,7 @@ const RenteePage = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm ">
-          <form id="formElement">
+          <form ref={formElement}>
             <div className=" grid grid-cols-2 gap-4">
               <div>
                 <label
