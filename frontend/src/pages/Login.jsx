@@ -37,7 +37,7 @@ export default function Login() {
     }
 
     axios
-      .post(process.env.SERVER_URL + "/api/login", formData)
+      .post("https://go-bike-backend.onrender.com/api/login", formData)
       .then(({ data }) => {
         storeInSession("user", JSON.stringify(data));
         setUserAuth(data);
