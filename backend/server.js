@@ -28,6 +28,12 @@ let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for pass
 
 //app user
 app.use(express.json());
+app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+  })
+);
 
 //Dev logging middleware
 if (process.env.NODE_ENV === "development") {
